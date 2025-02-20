@@ -48,4 +48,6 @@ router
   .route('/:id/comment/:commentId/reply')
   .post(isAuthenticated, contentCreatorController.createReply);
 
+router.route('/rewardPoint/:id').put(contentCreatorController.rewardPoint);
+
 export default router;

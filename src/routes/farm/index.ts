@@ -18,7 +18,7 @@ router
     validate(createBanner),
     farmBannerController.createBanner
   )
-  .get(isAuthenticated, farmBannerController.getBanners);
+  .get(farmBannerController.getBanners);
 router
   .route('/banner/:id')
   .put(
@@ -38,7 +38,7 @@ router
     multerMiddleware.array('images', 5),
     farmController.createFarm
   )
-  .get(isAuthenticated, farmController.getFarms);
+  .get(farmController.getFarms);
 
 router
   .route('/:id')

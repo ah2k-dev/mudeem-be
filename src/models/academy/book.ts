@@ -44,6 +44,11 @@ const bookSchema = new mongoose.Schema<IBook>(
       required: true,
       enum: ['new', 'popular']
     },
+    isPremium: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     greenPoints: {
       type: Number,
       required: true

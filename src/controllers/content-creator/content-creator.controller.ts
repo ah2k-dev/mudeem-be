@@ -55,19 +55,7 @@ const createContent: RequestHandler = async (req, res) => {
       thumbnail: thumbnailLink.secure_url,
       description
     });
-    await User.updateOne(
-      { _id: req.user?._id },
-      {
-        $inc: { greenPoints: 30 },
-        $push: {
-          greenPointsHistory: {
-            points: 30,
-            reason: 'content',
-            date: Date.now()
-          }
-        }
-      }
-    );
+
     return SuccessHandler({
       res,
       data: { message: `Content created`, content },
@@ -469,6 +457,38 @@ const createReply: RequestHandler = async (req, res) => {
   }
 };
 
+const rewardPoint: RequestHandler = async (req, res) => {
+  // #swagger.tags = ['waste']
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const request = await Reel.findByIdAndUpdate(id, { status });
+    if (request && status === 'accepted') {
+      await User.updateOne(
+        { _id: request?.user },
+        {
+          $inc: { greenPoints: req.body.greenPoints },
+          $push: {
+            greenPointsHistory: {
+              points: req.body.greenPoints,
+              reason: 'content',
+              date: Date.now()
+            }
+          }
+        }
+      );
+    }
+    return SuccessHandler({ res, data: request, statusCode: 200 });
+  } catch (error) {
+    return ErrorHandler({
+      message: (error as Error).message,
+      statusCode: 500,
+      req,
+      res
+    });
+  }
+};
 export {
   createContent,
   getReels,
@@ -478,5 +498,6 @@ export {
   createComment,
   deleteComment,
   likeUnlikeComment,
-  createReply
+  createReply,
+  rewardPoint
 };

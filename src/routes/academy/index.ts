@@ -11,8 +11,6 @@ const router: Router = express.Router();
 router
   .route('/book')
   .post(
-    isAuthenticated,
-    isAdmin,
     multerMiddleware.fields([
       { name: 'cover', maxCount: 1 },
       { name: 'book', maxCount: 1 }
@@ -20,7 +18,7 @@ router
     // validate(schema.createAcademy),
     academyController.createBook
   )
-  .get(isAuthenticated, academyController.getAllBooks);
+  .get(academyController.getAllBooks);
 
 router
   .route('/book/:id')

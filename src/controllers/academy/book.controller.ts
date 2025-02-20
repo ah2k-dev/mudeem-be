@@ -17,6 +17,7 @@ const createBook: RequestHandler = async (req, res) => {
       language,
       year,
       price,
+      isPremium,
       type,
       greenPoints
     } = req.body;
@@ -44,6 +45,7 @@ const createBook: RequestHandler = async (req, res) => {
       language,
       year,
       price,
+      isPremium,
       type,
       greenPoints
     });

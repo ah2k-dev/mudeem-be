@@ -11,21 +11,22 @@ const router: Router = express.Router();
 router
   .route('/company')
   .post(
-    isAuthenticated,
-    isAdmin,
+    // isAuthenticated,
+    // isAdmin,
     // multerMiddleware.array('documents', 5),
     // validate(schema.createProject),
     wasteController.createCompany
   )
   .get(
-    isAuthenticated,
+    // isAuthenticated,
     // isAdmin,
     wasteController.getAllCompanies
   );
 
 router
   .route('/company/:id')
-  .delete(isAuthenticated, isAdmin, wasteController.deleteCompany);
+  .patch(wasteController.updateCompany)
+  .delete(wasteController.deleteCompany);
 
 router
   .route('/request')
@@ -34,14 +35,14 @@ router
     // validate(schema.createRequest),
     wasteController.createRequest
   )
-  .get(isAuthenticated, wasteController.getAllRequests);
+  .get(wasteController.getAllRequests);
 
 router
   .route('/request/:id')
-  .get(isAuthenticated, wasteController.getRequestById)
+  .get(isAuthenticated, wasteController.getRequestById);
 
 router
   .route('/request/approve-reject/:id')
-  .put(isAuthenticated, isAdmin, wasteController.approveRejectRequest);
+  .put(wasteController.approveRejectRequest);
 
 export default router;

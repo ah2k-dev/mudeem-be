@@ -9,6 +9,7 @@ export interface IBook extends Document {
   language: string;
   year: number;
   price: number;
+  isPremium: boolean;
   content: string;
   type: 'new' | 'popular';
   greenPoints: number;

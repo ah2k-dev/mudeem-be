@@ -8,9 +8,11 @@ import User from '../../models/User/user.model';
 const createCompany: RequestHandler = async (req, res) => {
   // #swagger.tags = ['waste']
   try {
-    const { name, description, location, contact, email, website } = req.body;
+    const { name, description, location, contact, email, website, owner } =
+      req.body;
     const company = await Company.create({
       name,
+      owner,
       location,
       contact,
       email,
@@ -53,6 +55,23 @@ const deleteCompany: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const company = await Company.findByIdAndUpdate(id, { isActive: false });
+    return SuccessHandler({ res, data: company, statusCode: 200 });
+  } catch (error) {
+    return ErrorHandler({
+      message: (error as Error).message,
+      statusCode: 500,
+      req,
+      res
+    });
+  }
+};
+const updateCompany: RequestHandler = async (req, res) => {
+  // #swagger.tags = ['waste']
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const company = await Company.findByIdAndUpdate(id, body);
+
     return SuccessHandler({ res, data: company, statusCode: 200 });
   } catch (error) {
     return ErrorHandler({
@@ -129,7 +148,7 @@ const getAllRequests: RequestHandler = async (req, res) => {
     let limit = Number(req.query.limit) || 10;
     const skip = page * limit;
 
-    const requests = await Waste.find(filters)
+    const requests = await Waste.find()
       .skip(skip)
       .limit(limit)
       .populate('company')
@@ -206,6 +225,7 @@ export {
   createCompany,
   getAllCompanies,
   deleteCompany,
+  updateCompany,
   createRequest,
   getAllRequests,
   approveRejectRequest,
